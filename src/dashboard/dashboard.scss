@@ -1,0 +1,171 @@
+@import "styles/colors.scss";
+.dashboardContainer {
+  display: flex;
+  justify-content: center;
+  padding-top: 70px;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-bottom: 40px;
+
+  .button1,
+  .button2,
+  .button3 {
+    display: inline-block;
+    margin: auto;
+  }
+
+  > div:not(:last-child) {
+    margin-right: 26px;
+  }
+
+  .learnmore,
+  .locking {
+    text-align: left;
+    margin-bottom: 25px;
+
+    div.moreinfo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+
+      .circled-number {
+        flex-shrink: 2;
+        padding-right: 10px;
+        .number {
+          bottom: 1px;
+        }
+      }
+
+      .message {
+        flex-grow: 2;
+      }
+    }
+  }
+
+  .learnmore {
+    min-width: 290px;
+    max-width: 290px;
+    border-top: 4px solid $color-lightblue;
+    padding-top: 30px;
+    .image {
+      text-align: center;
+
+      img {
+        width: 265px;
+      }
+    }
+
+    a {
+      text-decoration: underline;
+    }
+
+    > div:not(:last-child) {
+      margin-bottom: 16px;
+    }
+
+    .moreinfo {
+      margin-bottom: 28px;
+
+      .icon {
+        flex-shrink: 2;
+        padding-right: 10px;
+        img {
+          height: 16px;
+          position: relative;
+          top: 2px;
+        }
+      }
+    }
+  }
+
+  .locking {
+    > .section.doubleSection {
+      .left.yourLocks {
+        .heading1 {
+          white-space: normal;
+          line-height: 26px;
+        }
+        .repStatus {
+          text-align: center;
+
+          .repStyle {
+            color: $color-lightblue;
+          }
+
+          .left,
+          .right {
+            padding: 10px;
+          }
+
+          .left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            .totalRep {
+              font-size: 24px;
+              font-weight: bold;
+              white-space: nowrap;
+            }
+
+            .yourRep {
+              font-size: 22px;
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+
+      .right.lockingform {
+        padding: 0;
+        min-width: 400px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .dashboardContainer {
+    flex-wrap: wrap;
+
+    > div:not(:last-child),
+    > div:last-child {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .locking {
+      > .section.doubleSection {
+        flex-direction: column;
+
+        .left.yourLocks {
+          border-right: none;
+          flex-basis: 100%;
+
+          .moreinfolist {
+            margin-bottom: 32px;
+          }
+        }
+
+        .right.lockingform {
+          flex-basis: 100%;
+          padding-bottom: 20px;
+          min-width: 90vw;
+        }
+      }
+    }
+  }
+}
+
+// @media screen and (max-width: 530px) {
+//   .dashboardContainer {
+//     .locking {
+//       > .section.doubleSection {
+//         .left.yourLocks {
+//           .heading1 {
+//             text-align: center;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

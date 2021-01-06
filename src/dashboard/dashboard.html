@@ -1,0 +1,80 @@
+<template>
+  <div class="animated-page au-animate dashboardContainer">
+
+    <div class="learnmore">
+      <div class="title">PRIME Lock</div>
+      <div class="blurb">Do you fancy yourself a keen steward of the DAO? Earn voting power (REP) in PrimeDAO by locking PRIME tokens!</div>
+      <div class="moreinfo">
+        <div class="icon"><img src="/PD_ASSET_ICON_INFO_01.svg" /></div>
+        <div class="message">Learn more about <a href="https://docs.primedao.io/primedao/tokenomics/understanding-rep" target="_blank" rel="noopener noreferrer">REP</a>.</div>
+      </div>
+      <div class="image"><img src="/PD_APP_PRIME_LOCK_V01-1_1.png" /></div>
+    </div>
+
+    <div class="locking">
+      <div class="section doubleSection">
+        <div class="left yourLocks">
+          <span class="triangle"><img /></span>
+          <div class="heading1">The future of PrimeDAO is yours!</div>
+          <div class="blurb">PrimeDAO needs good governance! Between <span>${lockingStartTime | date:"amPmHourTz"} ${lockingStartTime | date:'shortdate'}</span> and ${lockingEndTime | date:"amPmHourTz"} ${lockingEndTime | date:"shortdate"}, safely deposit your PRIME tokens to generate voting power — also called Reputation — in the DAO. You can use REP to approve or deny DAO-funded proposals, interface and protocol changes as PrimeDAO paves the way towards sustainable decentralized finance.</div>
+          <div class="blurb">You will be awarded REP relative to all PRIME locked based off of:</div>
+          <div class="moreinfolist">
+            <div class="moreinfo">
+              <circled-number>1</circled-number>
+              <div class="message">The total amount of PRIME tokens you lock and...</div>
+            </div>
+            <div class="moreinfo">
+              <circled-number>2</circled-number>
+              <div class="message">The length of time for which you lock them</div>
+            </div>
+          </div>
+          <div class="section doubleSection repStatus">
+            <div class="left">
+              <div class="totalRep repStyle">
+                <span if.to-view="!userReputationEarned">--</span>
+                <formatted-number else value.to-view="userReputationEarned | ethwei"></formatted-number> REP
+              </div>
+              <div class="yourRep repStyle">
+                <span if.to-view="percentUserReputationEarned === undefined">--</span>
+                <formatted-number else
+                  value.to-view="percentUserReputationEarned"
+                  average="false"
+                  mantissa="2"></formatted-number>%
+              </div>
+            </div>
+            <div class="right">
+              <div><span if.to-view="userHasRedeemedReputation">You've generated</span><span else>You will generate</span>
+                <span class="repStyle">
+                  <formatted-number if.to-view="userReputationEarned" value.to-view="userReputationEarned | ethwei"></formatted-number>
+                  <span else>--</span>
+                </span>, or <span class="repStyle">
+                  <span if.to-view="percentUserReputationEarned === undefined">--</span>
+                  <formatted-number else
+                    value.to-view="percentUserReputationEarned"
+                    average="false"
+                    mantissa="2"></formatted-number>%
+                </span> of the DAO's total voting power.
+              </div>
+              <div if.to-view="lockingPeriodHasNotStarted">Come back to earn REP!</div>
+              <div if.to-view="inLockingPeriod && !userHasLocked">Start locking to earn REP!</div>
+              <div if.to-view="inLockingPeriod && userHasLocked">Keep locking to earn more!</div>
+              <div if.to-view="lockingPeriodIsEnded && userHasLocked">Congratulations on earning REP in the PrimeDAO!</div>
+              <div if.to-view="lockingPeriodIsEnded && !userHasLocked">&nbsp;</div>
+            </div>
+          </div>
+        </div>
+        <div class="right lockingform">
+          <lockingform
+            in-locking-period.to-view="inLockingPeriod"
+            locking-end-time.to-view="lockingEndTime"
+            locking-start-time.to-view="lockingStartTime"
+            locking-period-has-not-started.to-view="lockingPeriodHasNotStarted"
+            locking-period-is-ended.to-view="lockingPeriodIsEnded"
+            ms-until-can-lock-countdown.to-view="msUntilCanLockCountdown"
+            ms-remaining-in-period-countdown.to-view="msRemainingInPeriodCountdown"
+            user-prime-balance.to-view="userPrimeBalance"></lockingform>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

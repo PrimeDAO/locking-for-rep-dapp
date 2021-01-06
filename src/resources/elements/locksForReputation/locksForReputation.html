@@ -1,0 +1,45 @@
+<template>
+  <div class="lockForReputationContainer">
+    <div if.to-view="connected && locks">
+      <div class="noLocks" if.to-view="!loading && !locks.length">
+        You have not submitted any locks
+      </div>
+
+      <div if.to-view="loading" class="loading">
+        <i class="fas fa-circle-notch fa-spin"></i>
+      </div>
+
+      <div if.to-view="!loading && locks.length" class="locks">
+        <div class="header cell amount">PRIME Amount</div>
+        <div class="header cell releaseDate">Releasable On</div>
+        <div class="header cell actions">
+          <spinbutton
+            onclick.call="_refresh()"
+            class="locksRefreshButton"
+            spin.to-view="loading"
+            data-tippy-content="Refresh Locks List"></spinbutton>
+        </div>
+        <template repeat.for="lock of locks">
+          <div class="cell amount">${lock.amount | ethwei}</div>
+          <div class="cell releaseDate"
+            data-tippy-content.to-view="releaseTitle(lock)"
+            data-tippy-placement='top'>
+            ${releaseDate(lock)}
+          </div>
+          <div class="cell actions">
+            <button
+              click.delegate="_release(lock, $event)"
+              class.to-view="lock.canRelease ? '' : 'disabled'"
+              disabled.bind="!lock.canRelease"
+              show.to-view="!lock.released"
+              class="button3 small release">Release</button>
+            <div
+              if.to-view="lock.released"
+              class="textAsButton small complete">Completed</div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+</template>

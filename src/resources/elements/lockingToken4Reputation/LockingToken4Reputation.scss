@@ -1,0 +1,80 @@
+@import "styles/colors.scss";
+.lockingTokensForReputation {
+  padding-top: 30px;
+  .loading {
+    text-align: center;
+    padding-top: 30px;
+    i {
+      font-size: 22px;
+    }
+  }
+  .messaging,
+  .form {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 20px;
+  }
+
+  .allowanceMessage {
+    margin-bottom: 20px;
+  }
+
+  .messaging {
+    color: $color-yellow;
+    text-align: center;
+    font-size: 14px;
+
+    .message {
+      .icon {
+        padding-right: 6px;
+        img {
+          height: 16px;
+          position: relative;
+          top: 3px;
+        }
+      }
+    }
+  }
+
+  .connectButton {
+    text-align: center;
+  }
+
+  .form {
+    .inputButtonGroup {
+      display: flex;
+      justify-content: space-evenly;
+      margin-bottom: 20px;
+
+      .inputGroup {
+        white-space: nowrap;
+
+        label {
+          white-space: nowrap;
+          display: block;
+          margin-bottom: 6px;
+        }
+
+        .maxLabel {
+          display: inline-block;
+        }
+      }
+    }
+
+    .tokenButtons {
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .lockingTokensForReputation {
+    padding-top: 0;
+
+    .loading {
+      padding-bottom: 30px;
+    }
+  }
+}

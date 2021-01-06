@@ -1,0 +1,87 @@
+<template>
+  <!-- <instructions if.to-view="!lockingPeriodIsEnded">
+    <p>Select the number of PRIME tokens you would like to lock and the lock duration, in days, that you wish to lock them, for up to [XX?] days.</p>
+    <p>At the end of the locking period [which period?] you will be awarded Reputation proportionally according to the total amount of locked PRIME tokens, the value of the token at the time of locking, and the length of the locking period [?] of all participants.</p>
+    <p>After the lock duration you’ve specified has concluded, return to this web page to release the tokens. You will receive back the same amount of tokens that you locked.</p>
+  </instructions> -->
+  <div
+    class="lockingTokensForReputation">
+
+    <div if.to-view="refreshing" class="loading">
+      <i class="fas fa-circle-notch fa-spin"></i>
+    </div>
+    <div else>
+      <div class="messaging">
+        <div
+          class="message"
+          if.to-view="lockingPeriodHasNotStarted">The locking period has not yet begun. Return between ${lockingStartTime | date:'dayofmonth'} and ${lockingEndTime | date:'dayofmonth'} to lock tokens</div>
+
+        <div
+          class="message"
+          if.to-view="inLockingPeriod">
+          ${msRemainingInPeriodCountdown | timespan:"seconds"} remaining to lock your PRIME</div>
+
+        <div
+          class="message"
+          if.to-view="lockingPeriodIsEnded">The locking period has ended. You will receive your Reputation in PrimeDAO shortly. You can check to see if you’ve already received your REP by viewing the DAO's <a href="https://alchemy.daostack.io/dao/0x273d0f686a53a49a0fba2a801566b19f9aaf8fcd/members/" target="_blank" rel="noopener noreferrer">member list</a>.
+          <p><span class="icon"><img src="/PD_ASSET_ICON_INFO_01.svg" /></span>For help, please use the #support channel on <a href="https://discord.com/invite/x8v59pG" target="_blank" rel="noopener noreferrer">Discord</a>.</p>
+        </div>
+      </div>
+
+      <div if.to-view="!connected" class="connectButton">
+        <button class="button1" click.delegate="connect()">${lockingPeriodIsEnded ? "Connect to view your locks" : "Connect to lock and release your tokens"}</button>
+      </div>
+    </div>
+
+    <div
+      class="form"
+      if.to-view="!refreshing"
+      with.bind="lockModel">
+
+      <div if.to-view="connected && allowance && inLockingPeriod">
+        <div if.to-view="!noAllowance">
+          <div class="inputButtonGroup">
+            <div class="inputGroup">
+              <label for="lockAmount">Tokens to lock:</label>
+              <label class="maxLabel" if.to-view="userPrimeBalance.gt(0)"><button class="button4 small" click.delegate="handleGetMaxPrime()">Max</button></label>
+              <numeric-input id="lockAmount"
+                value.two-way="amount"
+                placeholder="0.0"></numeric-input>
+            </div>
+            <div class="inputGroup">
+              <label for="lockingPeriod">Number of days:</label>
+              <label class="maxLabel"><button class="button4 small" click.delegate="handleGetMaxLockingPeriod()">Max</button></label>
+              <numeric-input id="lockingPeriod"
+                value.two-way="period | secondsDays"
+                wei="false"
+                placeholder="0.0"></numeric-input>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div if.to-view="hasPartialAllowance">
+          <formatted-number value.to-view="allowance | ethwei"></formatted-number> PRIME are already approved for locking
+        </div> -->
+
+        <div class="allowanceMessage" if.to-view="noAllowance || hasPartialAllowance">
+          <div>Before locking you need to approve the eventual transfer of PRIME tokens from your account</div>
+        </div>
+
+        <div class="tokenButtons">
+          <button class="button1 tokenSubmitButton"
+            if.to-view="noAllowance || hasPartialAllowance"
+            click.delegate="approve()">Approve Token Transfer</button>
+          <button class="button1 tokenSubmitButton"
+            else
+            click.delegate="lock()">Lock Tokens</button>
+        </div>
+      </div>
+    </div>
+
+    <div if.to-view="connected && !lockingPeriodHasNotStarted">
+      <locks-for-reputation
+        locks.to-view="locks"
+        release.call="release({lock, releaseButton })"></locks-for-reputation>
+    </div>
+  </div>
+</template>
