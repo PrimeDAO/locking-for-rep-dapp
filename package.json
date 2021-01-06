@@ -1,5 +1,5 @@
 {
-  "name": "@primedao/locking",
+  "name": "@primedao/locking-for-rep-dapp",
   "version": "1.0.0",
   "description": "PrimeDAO's friendly module for token holders to generate voting power",
   "repository": {
@@ -10,7 +10,7 @@
   "homepage": "./",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --env.production --extractCss",
+    "build": "webpack --extractCss",
     "start": "webpack-dev-server --extractCss --open",
     "serve": "webpack-dev-server --extractCss",
     "build:dev": "webpack --extractCss",
