@@ -34,6 +34,7 @@ export class LockingToken4Reputation {
   @bindable msUntilCanLockCountdown: number;
   @bindable msRemainingInPeriodCountdown: number;
   @bindable inLockingPeriod: boolean;
+  @bindable gotTimes = false;
 
   lockModel: ILockingOptions = {
     tokenAddress: undefined,

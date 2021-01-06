@@ -35,6 +35,7 @@ export class Dashboard {
   subscriptions = new DisposableCollection();
   userHasLocked: boolean;
   userHasRedeemedReputation: boolean;
+  gotTimes = false;
 
   @computedFrom("lockingPeriodHasNotStarted", "lockingPeriodIsEnded")
   get inLockingPeriod(): boolean {
@@ -65,6 +66,9 @@ export class Dashboard {
     await this.initialize();
     this.subscriptions.push(this.eventAggregator.subscribe("secondPassed", async (blockDate: Date) => {
       this.refreshCounters(blockDate);
+      if (!this.gotTimes) {
+        this.gotTimes = true;
+      }
     }));
     return this.getUserBalances(true);
   }

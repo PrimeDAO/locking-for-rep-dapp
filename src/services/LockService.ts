@@ -32,21 +32,6 @@ export interface ILockerInfo {
   score: BigNumber;
 }
 
-export interface IRedeemOptions {
-  /**
-   * block in which contract was created, to optimize search for Redeem events, if needed
-   */
-  contractBirthBlock?: number;
-}
-
-export interface IGetUserEarnedOptions {
-  lockerAddress: Address;
-  /**
-   * block in which contract was created, to optimize search for Redeem events, if needed
-   */
-  contractBirthBlock?: number;
-}
-
 export interface IReleaseOptions {
   lockerAddress: Address;
   lockId: Hash;
@@ -169,7 +154,7 @@ export class LockService {
     private dateService: DateService,
   ) {
 
-    this.startingBlockNumber = this.ethereumService.targetedNetwork === Networks.Kovan ? 22431693 : 11389827;
+    this.startingBlockNumber = this.ethereumService.targetedNetwork === Networks.Kovan ? 22905012 : 11389827;
 
     this.eventAggregator.subscribe("Contracts.Changed", async (): Promise<void> => {
       this.initialize();

@@ -7,14 +7,14 @@
   <div
     class="lockingTokensForReputation">
 
-    <div if.to-view="refreshing" class="loading">
+    <div if.to-view="refreshing || !gotTimes" class="loading">
       <i class="fas fa-circle-notch fa-spin"></i>
     </div>
     <div else>
       <div class="messaging">
         <div
           class="message"
-          if.to-view="lockingPeriodHasNotStarted">The locking period has not yet begun. Return between ${lockingStartTime | date:'dayofmonth'} and ${lockingEndTime | date:'dayofmonth'} to lock tokens</div>
+          if.to-view="lockingPeriodHasNotStarted">The locking period has not yet begun. Return between ${lockingStartTime | date:'dayofmonth'} and ${lockingEndTime | date:'dayofmonth'} to lock tokens and earn REP!</div>
 
         <div
           class="message"
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <div if.to-view="!connected" class="connectButton">
+      <div if.to-view="!connected && !lockingPeriodHasNotStarted" class="connectButton">
         <button class="button1" click.delegate="connect()">${lockingPeriodIsEnded ? "Connect to view your locks" : "Connect to lock and release your tokens"}</button>
       </div>
     </div>
