@@ -11,25 +11,15 @@ It is written mostly in Typescript, and is bundled using Webpack.
 For more information, go to https://aurelia.io/docs/cli/webpack
 
 ## Install
-Note this is part of a monorepo.  Install dependencies at the root of the monorepo with the following command:
-```
-npx lerna bootstrap
-```
-
-Or within this package with:
+Install dependencies with the following command:
 ```
 npm ci
 ```
 
-To add a new dependency to this package, run:
-
-```
-npm i [package name] [--save | --save-dev ]
-npx lerna boostrap
-```
 ## Import the required contracts
 
-The contract addresses and ABIs originate in the sibling package "contracts".
+The contract addresses and ABIs are assumed to be located in a sibling folder called "contracts" (from here: https://github.com/PrimeDAO/contracts).
+
 Whenever you need to update the contract addresses or ABIs, run:
 
 ```
