@@ -70,6 +70,11 @@ export class Dashboard {
         this.gotTimes = true;
       }
     }));
+
+    this.subscriptions.push(this.eventAggregator.subscribe("Lock.Submitted", async () => {
+      this.getUserBalances();
+    }));
+    
     return this.getUserBalances(true);
   }
 
@@ -110,7 +115,7 @@ export class Dashboard {
     if (this.initialized && this.ethereumService.defaultAccountAddress) {
       try {
         if (!initializing) {
-        // timeout to allow styles to load on startup to modalscreen sizes correctly
+        // timeout to allow styles to load on startup so modalscreen sizes correctly
           setTimeout(() => this.eventAggregator.publish("dashboard.loading", true), 100);
         }
         this.userPrimeBalance = await this.primeToken.balanceOf(this.ethereumService.defaultAccountAddress);
