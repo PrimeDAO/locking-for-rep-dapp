@@ -121,17 +121,19 @@ export class Dashboard {
         this.userPrimeBalance = await this.primeToken.balanceOf(this.ethereumService.defaultAccountAddress);
         const userRedeemedAmount = await this.lockService.getRedeemedAmount(this.ethereumService.defaultAccountAddress);
         this.userHasLocked = await this.lockService.userHasLocked(this.ethereumService.defaultAccountAddress);
-        this.userReputationEarned = await this.lockService.getUserEarnedReputation(this.ethereumService.defaultAccountAddress, userRedeemedAmount);
-        const totalReputationAvailable = await this.lockService.getReputationReward();
-        this.percentUserReputationEarned = toBigNumberJs(this.userReputationEarned)
-          .div(toBigNumberJs(totalReputationAvailable).plus(toBigNumberJs(this.totalReputation)))
-          .times(100)
-          .toNumber();
-        this.userHasRedeemedReputation =
-          this.lockingPeriodIsEnded &&
-          this.userHasLocked &&
-          (this.percentUserReputationEarned > 0) &&
-          (await this.lockService.getRedeemedAmount(this.ethereumService.defaultAccountAddress)).gt(0);
+        if (this.lockingPeriodIsEnded) {
+          this.userReputationEarned = await this.lockService.getUserEarnedReputation(this.ethereumService.defaultAccountAddress, userRedeemedAmount);
+          const totalReputationAvailable = await this.lockService.getReputationReward();
+          this.percentUserReputationEarned = toBigNumberJs(this.userReputationEarned)
+            .div(toBigNumberJs(totalReputationAvailable).plus(toBigNumberJs(this.totalReputation)))
+            .times(100)
+            .toNumber();
+          this.userHasRedeemedReputation =
+            this.lockingPeriodIsEnded &&
+            this.userHasLocked &&
+            (this.percentUserReputationEarned > 0) &&
+            (await this.lockService.getRedeemedAmount(this.ethereumService.defaultAccountAddress)).gt(0);
+        }
 
         this.connected= true;
       } catch (ex) {

@@ -28,7 +28,7 @@
               <div class="message">The length of time for which you lock them</div>
             </div>
           </div>
-          <div class="section doubleSection repStatus">
+          <div if.to-view="lockingPeriodIsEnded" class="section doubleSection repStatus">
             <div class="left">
               <div class="totalRep repStyle">
                 <span if.to-view="!userReputationEarned">--</span>
@@ -62,6 +62,7 @@
               <div if.to-view="lockingPeriodIsEnded && !userHasLocked">&nbsp;</div>
             </div>
           </div>
+          <div else class="section repStatus">Here you will be able to see how much REP you earned from locking, once the locking period has ended. Lock more to earn more!</div>
         </div>
         <div class="right lockingform">
           <lockingform
