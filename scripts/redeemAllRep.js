@@ -1,8 +1,7 @@
 require("dotenv").config();
 const { ethers } = require("ethers");
-const { formatEther } = require("ethers/lib/utils");
 
-async function getRedeems(lockingToken4Reputation) {
+async function getRedemptions(lockingToken4Reputation) {
 
   const filter = lockingToken4Reputation.filters.Lock();
   const events = await lockingToken4Reputation.queryFilter(filter);
@@ -56,13 +55,13 @@ async function main() {
     LockingToken4ReputationAbi.abi,
     signer);
 
-  const redeems = await getRedeems(lockingToken4Reputation)
+  const redemptions = await getRedemptions(lockingToken4Reputation)
 
-  if (redeems.size === 0) {
+  if (redemptions.size === 0) {
     console.log(`no lock events found`);
     return;
   } else {
-    console.log(`redeemers:\n\r${Array.from(redeems)}`);
+    console.log(`redeemers:\n\r${Array.from(redemptions)}`);
   }
   /*
   const redeemsBatchSize = 90
