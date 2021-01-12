@@ -34,7 +34,7 @@ export default class ElementGenerator {
   message: string;
 
   constructor() {
-    this.message = 'primelocking.eth';
+    this.message = 'primelock.eth';
   }
 }
 `
