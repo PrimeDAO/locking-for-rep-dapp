@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { ethers } = require("ethers");
+const { parseUnits } = require("ethers/lib/utils");
 
 async function getRedemptions(lockingToken4Reputation) {
 
@@ -48,6 +49,9 @@ async function main() {
   const signer = new ethers.Wallet(process.env.private_key, provider);
   console.log(`account: ${signer.address}`);
 
+  const gasPrice = parseUnits(process.env.gas_price, "gwei");
+  console.log(`gasPrice: ${gasPrice.toString()}`);
+
   const LockingToken4ReputationAbi = require("../src/contracts/LockingToken4Reputation.json");
 
   const lockingToken4Reputation = new ethers.Contract(
@@ -63,44 +67,58 @@ async function main() {
   } else {
     console.log(`redeemers:\n\r${Array.from(redemptions)}`);
   }
-  /*
-  const redeemsBatchSize = 90
-  let redeemsCount = redeems.length
-  let redeemsCounter = 0
+
+  const reputationLockerAbi = require("../src/contracts/PrimeReputationRedeemer.json");
+
+  const reputationLocker = new ethers.Contract(
+    process.env.reputationLockerAddress,
+    reputationLockerAbi.abi,
+    signer);
+
+  const redeemsBatchSize = 90;
+  let redeemsCount = redeems.size;
+  let redeemsCounter = 0;
+
   while (redeemsCount > 0) {
     let currentBatchCount = redeemsCount < redeemsBatchSize ? redeemsCount : redeemsBatchSize
     let redeemsBatch = redeems.slice(redeemsCounter * redeemsBatchSize, redeemsCounter * redeemsBatchSize + currentBatchCount)
-  
-    tx = await lockingToken4Reputation.redeem(lockingForReputationAddress)
-  
-    let gas
-    const blockLimit = (await provider.eth.getBlock('latest')).gasLimit
+
+    let gas;
+    const blockLimit = (await provider.getBlock("latest")).gasLimit;
     try {
-      gas = await tx.estimateGas()
+
+      gas = await reputationLocker
+        .estimateGas
+        .redeemLocking4Reputation(process.env.lockingForReputationAddress, redeemsBatch);
+
       if (gas * 1.1 < blockLimit - 100000) {
         gas *= 1.1
       }
     } catch (error) {
       gas = blockLimit - 100000
     }
+
     gas = parseInt(gas)
     console.log("GAS " + gas)
-    await tx.send({
-      from: provider.eth.defaultAccount,
-      gas,
-      gasPrice: process.env.gas_price,
-    }).on("confirmation", function (_, receipt) {
+
+    try {
+      await reputationLocker.redeemLocking4Reputation(process.env.lockingForReputationAddress, redeemsBatch, {
+        gas,
+        gasPrice,
+      }).wait(2);
+
       console.log(
-        `Transaction ${receipt.transactionHash} successfully redeemed ${redeemsBatch.length} CLT4Reputation locks.`
+        `Transaction ${receipt.transactionHash} successfully redeemed ${redeemsBatch.length} locks.`
       )
-    })
-      .on("error", console.error);
-  
+    }
+    catch (ex) {
+      console.error(ex);
+    }
+
     redeemsCount -= redeemsBatchSize
     redeemsCounter++
     console.log(`Redeems Counter: ${redeemsCounter}`);
   }
-  */
 }
 
 main()
