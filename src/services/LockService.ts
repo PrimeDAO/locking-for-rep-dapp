@@ -154,7 +154,7 @@ export class LockService {
     private dateService: DateService,
   ) {
 
-    this.startingBlockNumber = this.ethereumService.targetedNetwork === Networks.Kovan ? 22905012 : 11389827;
+    this.startingBlockNumber = this.ethereumService.targetedNetwork === Networks.Kovan ? 22905012 : 11700610;
 
     this.eventAggregator.subscribe("Contracts.Changed", async (): Promise<void> => {
       this.initialize();
