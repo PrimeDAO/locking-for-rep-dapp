@@ -30,7 +30,7 @@ describe("Events", () => {
 
   beforeAll(() => {
     eventAggregator = new EventAggregator();
-    transactionsService = new TransactionsService(eventAggregator);
+    transactionsService = new TransactionsService(eventAggregator, ethereumService);
     ethereumService = new EthereumService(eventAggregator);
     ethereumService.initialize(Networks.Kovan);
     contractsService = new ContractsService(eventAggregator, ethereumService);

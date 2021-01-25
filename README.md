@@ -28,7 +28,7 @@ npm run fetchContracts
 
 ## Run dev app
 
-Run `npm start`, then open `http://localhost:3300`.
+Run `npm start`, then open `http://localhost:3305`.
 
 You can change the standard webpack configurations from CLI easily with something like this: `npm start -- --open --port 8888`. However, it is better to change the respective npm scripts or `webpack.config.js` with these options, as per your need.
 

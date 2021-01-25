@@ -7,7 +7,7 @@
       "type": "edge",
       "version": "canary",
       "request": "launch",
-      "url": "http://localhost:3300",
+      "url": "http://localhost:3305",
       "webRoot": "${workspaceRoot}/src",
       // "trace": true,
       "smartStep": true,
