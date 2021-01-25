@@ -42,9 +42,9 @@ async function main() {
     "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
   }
 
-  console.log(`network: ${process.env.network}`);
+  console.log(`network: ${process.env.NETWORK}`);
 
-  const provider = ethers.getDefaultProvider(ProviderEndpoints[process.env.network]);
+  const provider = ethers.getDefaultProvider(ProviderEndpoints[process.env.NETWORK]);
 
   const signer = new ethers.Wallet(process.env.private_key, provider);
   console.log(`account: ${signer.address}`);
