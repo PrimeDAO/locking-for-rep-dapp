@@ -31,7 +31,7 @@ async function getRedemptions(lockingToken4Reputation) {
       redeems.add(beneficiary); // eliminate dups from multiple locks
     }
   }
-  return redeems;
+  return Array.from(redeems);
 }
 
 async function main() {
@@ -61,14 +61,14 @@ async function main() {
 
   const redemptions = await getRedemptions(lockingToken4Reputation)
 
-  if (redemptions.size === 0) {
+  if (redemptions.length === 0) {
     console.log(`no lock events found`);
     return;
   } else {
-    console.log(`redeemers:\n\r${Array.from(redemptions)}`);
+    console.log(`redeemers:\n\r${redemptions}`);
   }
 
-  const reputationLockerAbi = require("../src/contracts/PrimeReputationRedeemer.json");
+  const reputationLockerAbi = require("../src/contracts/RepRedeemer.json");
 
   const reputationLocker = new ethers.Contract(
     process.env.reputationLockerAddress,
@@ -76,39 +76,41 @@ async function main() {
     signer);
 
   const redeemsBatchSize = 90;
-  let redeemsCount = redeems.size;
+  let redeemsCount = redemptions.length;
   let redeemsCounter = 0;
 
   while (redeemsCount > 0) {
     let currentBatchCount = redeemsCount < redeemsBatchSize ? redeemsCount : redeemsBatchSize
-    let redeemsBatch = redeems.slice(redeemsCounter * redeemsBatchSize, redeemsCounter * redeemsBatchSize + currentBatchCount)
+    let redeemsBatch = redemptions.slice(redeemsCounter * redeemsBatchSize, redeemsCounter * redeemsBatchSize + currentBatchCount)
 
-    let gas;
+    let gasLimit;
     const blockLimit = (await provider.getBlock("latest")).gasLimit;
     try {
 
-      gas = await reputationLocker
+      gasLimit = await reputationLocker
         .estimateGas
         .redeemLocking4Reputation(process.env.lockingForReputationAddress, redeemsBatch);
 
-      if (gas * 1.1 < blockLimit - 100000) {
-        gas *= 1.1
+      if (gasLimit * 1.1 < blockLimit - 100000) {
+        gasLimit *= 1.1
       }
     } catch (error) {
-      gas = blockLimit - 100000
+      gasLimit = blockLimit - 100000
     }
 
-    gas = parseInt(gas)
-    console.log("GAS " + gas)
+    gasLimit = parseInt(gasLimit)
+    console.log("gasLimit " + gasLimit)
 
     try {
-      await reputationLocker.redeemLocking4Reputation(process.env.lockingForReputationAddress, redeemsBatch, {
-        gas,
+      const response = await reputationLocker.redeemLocking4Reputation(process.env.lockingForReputationAddress, redeemsBatch, {
+        gasLimit,
         gasPrice,
-      }).wait(2);
+      });
+
+      const receipt = await response.wait(2);
 
       console.log(
-        `Transaction ${receipt.transactionHash} successfully redeemed ${redeemsBatch.length} locks.`
+        `Transaction ${receipt.transactionHash} successfully redeemed ${redeemsBatch.length} locks`
       )
     }
     catch (ex) {
@@ -117,7 +119,7 @@ async function main() {
 
     redeemsCount -= redeemsBatchSize
     redeemsCounter++
-    console.log(`Redeems Counter: ${redeemsCounter}`);
+    console.log(`Redemptions Counter: ${redeemsCounter}`);
   }
 }
 
