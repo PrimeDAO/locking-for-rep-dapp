@@ -20,7 +20,12 @@
             data-tippy-content="Refresh Locks List"></spinbutton>
         </div>
         <template repeat.for="lock of locks">
-          <div class="cell amount">${lock.amount | ethwei}</div>
+          <div class="cell amount">
+            <formatted-number value.to-view="lock.amount | ethwei"
+              average="false"
+              thousands-separated="true"
+              mantissa="2"></formatted-number>
+          </div>
           <div class="cell releaseDate"
             data-tippy-content.to-view="releaseTitle(lock)"
             data-tippy-placement='top'>

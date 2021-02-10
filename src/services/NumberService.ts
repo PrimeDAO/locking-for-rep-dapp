@@ -1,5 +1,4 @@
-﻿import BN from "bignumber.js"; // buried in other packages
-const numbro = require("numbro");
+﻿const numbro = require("numbro");
 
 // export enum RoundingType {
 //   Bankers = 1,
@@ -17,6 +16,7 @@ export class NumberService {
       precision?: string | number,
       average?: boolean,
       mantissa?: string | number,
+      thousandSeparated?: boolean
     },
   ): string | null | undefined {
 
@@ -31,9 +31,10 @@ export class NumberService {
     return numbro(value).format(
       Object.assign(
         { average: !!options?.average },
+        { thousandSeparated: !!options?.thousandSeparated },
         Number(options?.precision) ? { totalLength: this.fromString(options.precision) } : {},
         options.mantissa !== undefined ? { mantissa: this.fromString(options.mantissa) } : undefined,
-      ) );
+      ));
   }
 
   /**
