@@ -85,6 +85,22 @@
           white-space: normal;
           line-height: 26px;
         }
+
+        .totalLocked {
+          color: $color-white;
+          text-align: center;
+          font-size: 22px;
+          padding-top: 18px;
+          border-top: 2px solid white;
+          margin-top: 31px;
+          padding-bottom: 20px;
+          display: inline-block;
+          position: relative;
+          left: 50%;
+          right: 50%;
+          transform: translateX(-50%);
+        }
+
         .repStatus {
           text-align: center;
 

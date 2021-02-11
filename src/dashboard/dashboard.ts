@@ -36,6 +36,7 @@ export class Dashboard {
   userHasLocked: boolean;
   userHasRedeemedReputation: boolean;
   gotTimes = false;
+  totalAmountLocked: BigNumber;
 
   @computedFrom("lockingPeriodHasNotStarted", "lockingPeriodIsEnded")
   get inLockingPeriod(): boolean {
@@ -99,6 +100,7 @@ export class Dashboard {
         this.totalReputation = await this.avatarService.reputation.totalSupply();
         this.lockingEndTime = await this.lockService.getLockingEndTime();
         this.lockingStartTime = await this.lockService.getLockingStartTime();
+        this.totalAmountLocked = await this.lockService.getTotalTokensLocked();
 
       } catch (ex) {
         this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));

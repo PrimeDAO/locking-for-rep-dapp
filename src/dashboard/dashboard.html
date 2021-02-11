@@ -28,6 +28,13 @@
               <div class="message">The length of time for which you lock them</div>
             </div>
           </div>
+          <div if.to-view="!lockingPeriodHasNotStarted" class="totalLocked">
+            <formatted-number
+              value.to-view="totalAmountLocked | ethwei"
+              average="false"
+              thousands-separated="true"
+              mantissa="2"></formatted-number> PRIME Have Been Locked
+          </div>
           <div if.to-view="lockingPeriodIsEnded" class="section doubleSection repStatus">
             <div class="left">
               <div class="totalRep repStyle">
