@@ -60,11 +60,13 @@ async function main() {
     signer);
 
   const redemptions = await getRedemptions(lockingToken4Reputation)
+  let redeemsCount = redemptions.length;
 
   if (redemptions.length === 0) {
     console.log(`no lock events found`);
     return;
   } else {
+    console.log(`redeemptions:\n\r${redeemsCount}`);
     console.log(`redeemers:\n\r${redemptions}`);
   }
 
@@ -76,7 +78,6 @@ async function main() {
     signer);
 
   const redeemsBatchSize = 90;
-  let redeemsCount = redemptions.length;
   let redeemsCounter = 0;
 
   while (redeemsCount > 0) {
@@ -119,8 +120,8 @@ async function main() {
 
     redeemsCount -= redeemsBatchSize
     redeemsCounter++
-    console.log(`Redemptions Counter: ${redeemsCounter}`);
   }
+  console.log(`Batches run: ${redeemsCounter}`);
 }
 
 main()
